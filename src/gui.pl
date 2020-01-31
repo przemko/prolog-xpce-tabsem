@@ -32,7 +32,7 @@
 % - dopisac odczytywanie relacji w predykacie model_to_atom/3
 %
 
-:- module(gui, [make_window/0]).
+:- module(gui, [make_window/1]).
 
 :- use_module(library(pce)).
 :- use_module(library(help_message)).
@@ -41,7 +41,7 @@ version(9).
 
 :- use_module(tabsem).
 
-make_window :-
+make_window(_Arg) :-
 	new(Dialog1, dialog),
 	new(Picture, picture),
 	new(Dialog2, dialog),
@@ -55,11 +55,11 @@ make_window :-
 	send(Picture, below, Dialog1),
 	send(Dialog2, below, Picture),
 	make_dialog2(Dialog2, Status),
-	make_dialog1(Dialog1, Picture, Status),
+	make_dialog1(Dialog1, Picture, Status, Window),
 	make_picture(Picture),
 	send(Window, open).
 
-make_dialog1(Dialog, Picture, Status) :-
+make_dialog1(Dialog, Picture, Status, Window) :-
 	new(Formula, text_item(formula, '')),
 	send(Formula, help_message, tag, 'Input formula'),
 	send(Formula, value_font, font(courier, roman, 14)),
@@ -91,7 +91,7 @@ make_dialog1(Dialog, Picture, Status) :-
 	new(About, button(about)),
 	send(About, help_message, tag, 'About application'),
 	send(About, message, message(@prolog, open_about, About)),
-	new(Quit, button(quit, message(@prolog, halt))),
+	new(Quit, button(quit, message(Window, destroy))),
 	send(Quit, help_message, tag, 'Close window and quit application'),
 	send(Dialog, append, Formula),
 	send(Examples, below, Formula),

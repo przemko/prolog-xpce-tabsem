@@ -10,7 +10,6 @@
 % Autor: Przemyslaw Kobylanski <przemko@pwr.wroc.pl>
 %
 
-:- module(main, [main/0]).
 
 :- use_module(library(pce)).
 :- use_module(tabsem).
@@ -27,16 +26,4 @@ main :-
         write('Wroclaw University of Technology'),
         nl,
         nl,
-        loop(make_window).
-
-loop(Goal) :-
-        call(Goal),
-        make_loop.
-
-make_loop :-
-        ignore(send(@display, dispatch)),
-        make_loop.
-
-
-:- main.
-
+        pce_main_loop(make_window).
